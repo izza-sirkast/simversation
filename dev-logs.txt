@@ -1,0 +1,34 @@
+app development logs:
+
+-> Tech stack server: nodejs, express, MySQL (using xampp)
+	-> Additional library: sequelize (orm), sequelize-cli, mysql2, cors
+
+-> Tech stack frontend: react (using vite) with js, react-router-dom, tailwind
+	-> Additional library: axios, formik (handling form in react), yup (validate form field value)
+
+
+============================================================================================================
+===> server development logs:
+- npm init
+- npm install express mysql2 cors
+- using nodemon for development for automatic server update
+
+- start sequelize:
+	- npm install sequelize sequelize-cli
+	- npx sequelize init => sequelize will initialize by creating folders including config, models, etc
+	- configure config.json at config/config.json to database that used in development
+	- create file in models to make database models: example at models/posts.js
+	- wrap express app listen method in db.sequelize.sync()
+
+- routes will be place in separate files, organized by the same parent path, example at routes/posts.js
+
+
+
+============================================================================================================
+===> client development logs:
+- react with js using vite
+- using tailwind for styling
+- using react-router-dom for frontend routing
+- using axios for connecting with server
+- using formik for handling form in react and using yup for validate form data
+- some component styling copy paste from flowbite 
