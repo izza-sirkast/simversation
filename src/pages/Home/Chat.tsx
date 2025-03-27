@@ -67,7 +67,6 @@ const Chat = ({room, other_user} : Props) => {
       socket.emit("send-private-message", res.data, room);
       setMessages(msgs => [...msgs, res.data]);
       setMessage("");
-      console.log(messages)
     } catch (error) {
       alert("Failed to send message");
     }
@@ -80,10 +79,17 @@ const Chat = ({room, other_user} : Props) => {
           <p>Realtime Chat | {other_user?.username}</p>
         </div>
 
-        <div className='flex-1 flex flex-col gap-2 px-2 pt-5'>
-            {messages.map((msg, index) => (
-                <p key={index} className={`px-2 border border-black ${msg.sender_id == user?.user_id ? 'self-end text-right' : 'self-start text-left' }`}>{msg.message}</p>
-            ))}
+        <div className='flex-1 flex flex-col gap-4 px-2 pt-5'>
+            {messages.map((msg, index) => {
+                const messageDateFormatted = new Date(msg.created_at).toLocaleString();
+                return (
+                  <div key={msg.private_chat_log_id} className={`${msg.sender_id == user?.user_id ? 'self-end text-right items-end' : 'self-start text-left items-start' } flex flex-col  max-w-2/3`}>
+                    <p key={index} className='px-2 border border-black'>{msg.message}</p>
+                    <p className='text-xs'>{messageDateFormatted}</p>
+                  </div>
+                )
+              }
+            )}
         </div>
 
         <div className='flex p-2 border-t border-black pt-2 sticky bottom-0 bg-white'>

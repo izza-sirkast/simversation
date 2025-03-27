@@ -5,7 +5,7 @@ import { API } from '../../configs/api';
 const socket = io(import.meta.env.VITE_API_URL);
 
 // Type
-import { GroupMessage, User } from '../../../types';
+import { GroupMessage } from '../../../types';
 
 type Props = {
   room: string
@@ -67,6 +67,7 @@ const GroupChat = ({room} : Props) => {
         group_chat_id: room,
         message: message,
         sender_id: user?.user_id || "",
+        username: user?.username || "",
         created_at: created_at,
         updated_at: created_at
     };
@@ -90,9 +91,20 @@ const GroupChat = ({room} : Props) => {
         </div>
 
         <div className='flex-1 flex flex-col gap-2 px-2 pt-5'>
-            {messages.map((msg, index) => (
+            {/* {messages.map((msg, index) => (
                 <p key={index} className={`px-2 border border-black ${msg.sender_id == user?.user_id ? 'self-end text-right' : 'self-start text-left' }`}>{msg.message}</p>
-            ))}
+            ))} */}
+            {messages.map((msg, index) => {
+                const messageDateFormatted = new Date(msg.created_at).toLocaleString();
+                return (
+                  <div key={msg.group_chat_log_id} className={`${msg.sender_id == user?.user_id ? 'self-end text-right items-end' : 'self-start text-left items-start' } flex flex-col  max-w-2/3`}>
+                    <p className='text-xs'>{msg.username}</p>
+                    <p key={index} className='px-2 border border-black'>{msg.message}</p>
+                    <p className='text-xs'>{messageDateFormatted}</p>
+                  </div>
+                )
+              }
+            )}
         </div>
 
         <div className='flex p-2 border-t border-black pt-2 sticky bottom-0 bg-white'>

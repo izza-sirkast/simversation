@@ -144,7 +144,7 @@ const Home = (props: Props) => {
           {isPrivateChat ? (
               <div className=''>
                 {
-                  friends.map(friend => (
+                  friends?.map(friend => (
                       <div key={friend.private_chat_id} className='flex justify-between items-center border-b border-black px-2'>
                         <p>Username : {friend.friend.username}</p>
                         <button className='border border-black bg-blue-100 cursor-pointer hover:bg-blue-200 m-2 px-2' onClick={() => openPrivateChat(friend.friend)}>Message</button>
