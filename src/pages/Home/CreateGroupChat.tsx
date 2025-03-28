@@ -1,6 +1,7 @@
 import {useState} from 'react'
 import { API } from '../../configs/api'
 import { useAuth } from '../../wrappers/AuthContext'
+import { useNavigate } from 'react-router'
 
 // Types
 import { Friend, User } from '../../../types'
@@ -16,6 +17,7 @@ const CreateGroupChat = ({ friends, setOpenCreateNewGroup }: Props) => {
   const [searchUser, setSearchUser] = useState<string>('')
   const [openSearchResult, setOpenSearchResult] = useState<boolean>(false)
   const { user } = useAuth()
+  const navigate = useNavigate()
 
   const handleSearchUser = (e : React.ChangeEvent<HTMLInputElement>) => {
     setSearchUser(e.target.value)
@@ -62,6 +64,8 @@ const CreateGroupChat = ({ friends, setOpenCreateNewGroup }: Props) => {
         console.log(data)
         alert('Group created successfully')
         setOpenCreateNewGroup(false)
+        // reload the page
+        navigate(-1);
     } catch (error) {
         console.log(error)
         alert('Failed to create group')

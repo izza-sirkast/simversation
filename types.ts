@@ -16,6 +16,7 @@ export interface GroupMessage {
     group_chat_log_id?: number;
     group_chat_id: string;
     sender_id: string;
+    username: string;
     message: string;
     created_at: string;
     updated_at: string;
