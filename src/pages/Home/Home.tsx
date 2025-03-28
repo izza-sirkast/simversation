@@ -88,6 +88,11 @@ const Home = (props: Props) => {
     setCurrentRoom(group_chat_id)
   }
 
+  const closeAndDeleteGroupChat = (groupChatId : string) => {
+    setCurrentRoom('')
+    setGroups(groups.filter(group => group.group_chat_id !== groupChatId))
+  }
+
   const changeMenu = (menu : 'private' | 'group') => {
     if(menu === 'private'){
       setIsPrivateChat(true)
@@ -107,7 +112,7 @@ const Home = (props: Props) => {
             searchResultOpen && (
               <>
                 <button className='ml-2 text-red-600 underline' onClick={() => setSearchResultOpen(false)}>close</button>
-                <div className='absolute w-1/4 bg-white border-t border-l border-r border-black mt-3 z-10'>
+                <div className='absolute w-1/4 bg-white border-t border-l border-r border-black mt-3 z-20'>
                 {
                   usersFound.length === 0 ? (
                     <p className=' text-red-600 underline border-b border-black p-2'>No user found</p> 
@@ -201,7 +206,7 @@ const Home = (props: Props) => {
           roomType === 'private' ? (
             <Chat room={currentRoom} other_user={currentPrivateChatUser} />
           ) : (
-            <GroupChat room={currentRoom} />
+            <GroupChat room={currentRoom} closeAndDeleteGroupChat={closeAndDeleteGroupChat} />
           )
         )
       }

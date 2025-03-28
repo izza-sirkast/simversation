@@ -8,10 +8,11 @@ const socket = io(import.meta.env.VITE_API_URL);
 import { GroupMessage } from '../../../types';
 
 type Props = {
-  room: string
+  room: string,
+  closeAndDeleteGroupChat: (room : string) => void
 }
 
-const GroupChat = ({room} : Props) => {
+const GroupChat = ({room, closeAndDeleteGroupChat} : Props) => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<GroupMessage[]>([]);
   const [groupChatInfo, setGroupChatInfo] = useState<any>({});
@@ -78,12 +79,33 @@ const GroupChat = ({room} : Props) => {
       socket.emit("send-private-message", res.data, room);
       setMessages(msgs => [...msgs, res.data]);
       setMessage("");
-    } catch (error) {
+    } catch (error : any) {
+      setMessage("");
+      // If the user hasn't verified the group chat yet
+      if (error.response.data.eventCode == 0){
+        alert(error.response.data.message);
+        return;
+      }
       alert("Failed to send message");
     }
 
   }
   
+  const verifyGroupChat = async (joining : boolean) => {
+    try {
+      const { data } = await API.put(`/group-chats/verifyGroupChat/${room}`, { joining })
+      if(data.eventCode == 0){
+        alert("Group chat verified successfully")
+        setGroupChatInfo((gc : any) => ({...gc, verified: true}));
+      }else if(data.eventCode == 1){
+        alert("Group chat declined successfully")
+        closeAndDeleteGroupChat(room);
+      }
+    } catch(error) {
+      alert("Failed to verify group chat")
+    }
+  }
+
   return (
     <div className='max-h-screen h-screen overflow-scroll flex flex-col'>
         <div className='sticky top-0 bg-white p-2 border-b border-black'>
@@ -107,15 +129,40 @@ const GroupChat = ({room} : Props) => {
             )}
         </div>
 
-        <div className='flex p-2 border-t border-black pt-2 sticky bottom-0 bg-white'>
-          <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type a message..."
-              className='border border-black w-full'
-          />
-          <button className='px-2 border border-black bg-blue-300 hover:bg-blue-500 cursor-pointer' onClick={sendMessage}>Send</button>
+        
+        <div className='sticky bottom-0 bg-white'>
+          {
+            !groupChatInfo.verified ? (
+              <div className='bg-red-200 border-t border-black p-2 flex justify-between'>
+                <p className='text-red-600'>You are invited to this group chat</p>
+
+                <div>
+                  <button 
+                    className='border border-black bg-blue-100 cursor-pointer hover:bg-blue-200 px-2'
+                    onClick={() => verifyGroupChat(true)}>
+                    Join
+                  </button>
+
+                  <button 
+                    className='border border-black bg-red-300 cursor-pointer hover:bg-red-400 px-2 ml-2'
+                    onClick={() => verifyGroupChat(false)}>
+                    Don't Join
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className='flex gap-2 border-t pt-2 border-black p-2'>
+                <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Type a message..."
+                    className='border border-black w-full px-2'
+                />
+                <button className='px-2 border border-black bg-blue-300 hover:bg-blue-500 cursor-pointer' onClick={sendMessage}>Send</button>
+              </div>
+            )
+          } 
         </div>
     </div>
   )
