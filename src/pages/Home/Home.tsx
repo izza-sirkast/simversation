@@ -9,6 +9,7 @@ import { Friend, User } from '../../../types'
 import Chat from './Chat'
 import CreateGroupChat from './CreateGroupChat'
 import GroupChat from './GroupChat'
+import ProfilePictureButton from './ProfilePictureButton'
 
 type Props = {}
 
@@ -104,31 +105,36 @@ const Home = (props: Props) => {
   return (
     <div className='grid grid-cols-2'>
       <div className='flex flex-col h-screen items-start p-2 border-r border-black'>
-        <div>
-          <input className='border border-black mr-2 px-2' type="text" placeholder='Search a user' value={searchUsername} onChange={(e) => setSearchUsername(e.target.value)}/>
-          <button onClick={findUser} className='bg-blue-100 border border-black px-2 cursor-pointer hover:bg-blue-200'>find</button>
+        <div className='flex justify-between items-center w-full'>
+          <div>
+            <input className='border border-black mr-2 px-2' type="text" placeholder='Search a user' value={searchUsername} onChange={(e) => setSearchUsername(e.target.value)}/>
+            <button onClick={findUser} className='bg-blue-100 border border-black px-2 cursor-pointer hover:bg-blue-200 inline'>find</button>
 
-          {
-            searchResultOpen && (
-              <>
-                <button className='ml-2 text-red-600 underline' onClick={() => setSearchResultOpen(false)}>close</button>
-                <div className='absolute w-1/4 bg-white border-t border-l border-r border-black mt-3 z-20'>
-                {
-                  usersFound.length === 0 ? (
-                    <p className=' text-red-600 underline border-b border-black p-2'>No user found</p> 
-                  ) : (
-                    searchResultOpen && usersFound.map((other_user) => (
-                      <div key={other_user.user_id} className='flex justify-between items-center border-b border-black px-2'>
-                        <p>username : {other_user.username}</p>
-                        <button className='border border-black bg-blue-200 m-2' onClick={() => openPrivateChat(other_user)}>Message</button>
-                      </div>
-                    ))
-                  )
-                }
+            {
+              searchResultOpen && (
+                <div className='absolute w-1/2 z-100 mt-2 p-2 bg-white border border-black'>
+                  <button className='ml-2 text-red-600 underline' onClick={() => setSearchResultOpen(false)}>close</button>
+                  <div className='bg-white border-t border-l border-r border-black mt-3 z-20'>
+                  {
+                    usersFound.length === 0 ? (
+                      <p className=' text-red-600 underline border-b border-black p-2'>No user found</p> 
+                    ) : (
+                      searchResultOpen && usersFound.map((other_user) => (
+                        <div key={other_user.user_id} className='flex justify-between items-center border-b border-black px-2'>
+                          <p>username : {other_user.username}</p>
+                          <button className='border border-black bg-blue-200 m-2' onClick={() => openPrivateChat(other_user)}>Message</button>
+                        </div>
+                      ))
+                    )
+                  }
+                  </div>
                 </div>
-              </>
-            )
-          }
+              )
+            }
+          </div>
+
+          <ProfilePictureButton />
+
         </div>
 
         <div className='flex-1 mt-3 mb-3 border border-black w-full overflow-scroll'>
