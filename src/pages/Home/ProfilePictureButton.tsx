@@ -2,9 +2,11 @@ import {useState, useEffect, useRef} from 'react'
 import { NavLink } from 'react-router'
 import { useAuth } from '../../wrappers/AuthContext'
 
-type Props = {}
+type Props = {
+  userId: string | "";
+}
 
-const ProfilePictureButton = (props: Props) => {
+const ProfilePictureButton = ({userId}: Props) => {
   const [ppActive, setPpActive] = useState<boolean>(false)
   const ppRef = useRef<HTMLDivElement>(null);
   const {logout} = useAuth();
@@ -30,7 +32,7 @@ const ProfilePictureButton = (props: Props) => {
         {
             ppActive &&
             <div className='absolute p-3 z-30 top-12 w-32 right-0 bg-white border border-black rounded-lg flex flex-col items-stretch'>
-                <NavLink to={'/profile'} className='border-t text-center border-black hover:bg-slate-200 p-1'>See profile</NavLink>
+                <NavLink to={`/profile/${userId}`} className='border-t text-center border-black hover:bg-slate-200 p-1'>See profile</NavLink>
                 <button className='border-t border-black bg-red-200 hover:bg-red-300 p-1' onClick={logout}>logout</button>
             </div>
         }
