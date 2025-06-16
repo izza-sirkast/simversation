@@ -33,7 +33,7 @@ const Home = (props: Props) => {
     // Friends = other users that the current user has private chat with
     const getFriends = async () => {
       try {
-        const { data } = await API.get(`/private-chats/getFriends/${user?.user_id}`)
+        const { data } = await API.get(`/private-chats/getFriends/${typeof user === 'object' && user !== null ? user.user_id : ""}`)
         setFriends(data.friends)
       } catch (error) {
         alert('Failed to get private chats')
@@ -70,7 +70,7 @@ const Home = (props: Props) => {
   const openPrivateChat = async (other_user: User) => {
     try {
       const { data } = await API.post('/private-chats/getByUserId', {
-        user_1_id: user?.user_id,
+        user_1_id: typeof user === 'object' && user !== null ? user.user_id : "",
         user_2_id: other_user.user_id
       })
       setCurrentRoom(data.private_chat_id)

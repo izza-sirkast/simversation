@@ -8,12 +8,17 @@ import ProtectedRoute from './wrappers/ProtectedRoute'
 import Login from './pages/auth-pages/Login'
 
 import Home from './pages/Home/Home'
+import Profile from './pages/profile/Profile'
 
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+      {/* <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} /> */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
       <Route path="/login" element={<Login type='login' />} />
       <Route path="/register" element={<Login type='register' />} />
     </Routes>

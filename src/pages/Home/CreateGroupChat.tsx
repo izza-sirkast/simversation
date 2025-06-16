@@ -54,7 +54,7 @@ const CreateGroupChat = ({ friends, setOpenCreateNewGroup }: Props) => {
     }
 
     let membersId = members.map(member => member.user_id)
-    membersId.push(user?.user_id)
+    membersId.push(typeof user === 'object' && user !== null ? user.user_id : "")
 
     try {
         const { data } = await API.post('/group-chats/createGroupChat', {

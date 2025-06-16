@@ -56,7 +56,7 @@ const Chat = ({room, other_user} : Props) => {
     const messageDetail : Message = {
         private_chat_id: room,
         message: message,
-        sender_id: user?.user_id || "",
+        sender_id: typeof user === 'object' && user !== null ? user.user_id : "",
         created_at: created_at,
         updated_at: created_at
     };
@@ -83,7 +83,7 @@ const Chat = ({room, other_user} : Props) => {
             {messages.map((msg, index) => {
                 const messageDateFormatted = new Date(msg.created_at).toLocaleString();
                 return (
-                  <div key={msg.private_chat_log_id} className={`${msg.sender_id == user?.user_id ? 'self-end text-right items-end' : 'self-start text-left items-start' } flex flex-col  max-w-2/3`}>
+                  <div key={msg.private_chat_log_id} className={`${(typeof user === 'object' && user !== null ? user.user_id === msg.sender_id : false) ? 'self-end text-right items-end' : 'self-start text-left items-start' } flex flex-col  max-w-2/3`}>
                     <p key={index} className='px-2 border border-black'>{msg.message}</p>
                     <p className='text-xs'>{messageDateFormatted}</p>
                   </div>

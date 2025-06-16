@@ -40,7 +40,7 @@ export interface PrivateChat {
 }
 
 export interface AuthContextType {
-    user: User | null;
+    user: User | null | string;
     setUser: (user: User | null) => void;
     login: (username: string, password: string) => Promise<void>;
     logout: () => void;
