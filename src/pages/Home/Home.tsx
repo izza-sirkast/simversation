@@ -133,7 +133,7 @@ const Home = (props: Props) => {
             }
           </div>
 
-          <ProfilePictureButton />
+          <ProfilePictureButton userId={typeof user === 'object' && user !== null ? user.user_id : ""} />
 
         </div>
 

@@ -6,7 +6,7 @@ import { User, AuthContextType } from '../../types.ts'
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: {children: react.ReactNode}) => {
-  const [user, setUser] = useState<AuthContextType["user"]>(null);
+  const [user, setUser] = useState<AuthContextType["user"]>("default");
   const navigate = useNavigate();
   
   useEffect(() => {
